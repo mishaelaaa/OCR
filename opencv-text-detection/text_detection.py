@@ -1,57 +1,60 @@
 # USAGE
-# python text_detection.py --image images/lebron_james.jpg --east frozen_east_text_detection.pb
+# python text_detection.py 
+# --image images/lebron_james.jpg 
+# --east frozen_east_text_detection.pb
 
 # import the necessary packages
 from imutils.object_detection import non_max_suppression
 import numpy as np
-import argparse
-import time
-import cv2
+import argparse, time, cv2, sys
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", type=str,
-	help="path to input image")
-ap.add_argument("-east", "--east", type=str,
-	help="path to input EAST text detector")
-ap.add_argument("-c", "--min-confidence", type=float, default=0.5,
-	help="minimum probability required to inspect a region")
-ap.add_argument("-w", "--width", type=int, default=320,
-	help="resized image width (should be multiple of 32)")
-ap.add_argument("-e", "--height", type=int, default=320,
-	help="resized image height (should be multiple of 32)")
-args = vars(ap.parse_args())
+args = {"image":"sign.jpg", 
+        "east":"frozen_east_text_detection.pb", 
+        "min_confidence":0.5, 
+        "width":320, "height":320}
 
-# load the input image and grab the image dimensions
-image = cv2.imread(args["image"])
+#Give location of the image to be read.
+#"Example-images/ex24.jpg" image is being loaded here. 
+
+args['image']="sign.jpg"
+image = cv2.imread(args['image'])
+
+#Saving a original image and shape
 orig = image.copy()
-(H, W) = image.shape[:2]
+(origH, origW) = image.shape[:2]
 
-# set the new width and height and then determine the ratio in change
-# for both the width and height
+# set the new height and width to default 320 by using args #dictionary.  
 (newW, newH) = (args["width"], args["height"])
-rW = W / float(newW)
-rH = H / float(newH)
 
-# resize the image and grab the new image dimensions
+#Calculate the ratio between original and new image for both height and weight. 
+#This ratio will be used to translate bounding box location on the original image. 
+rW = origW / float(newW)
+rH = origH / float(newH)
+
+# resize the original image to new dimensions
 image = cv2.resize(image, (newW, newH))
 (H, W) = image.shape[:2]
 
-# define the two output layer names for the EAST detector model that
-# we are interested -- the first is the output probabilities and the
-# second can be used to derive the bounding box coordinates of text
+# construct a blob from the image to forward pass it to EAST model
+blob = cv2.dnn.blobFromImage(image, 1.0, (W, H),
+	(123.68, 116.78, 103.94), swapRB=True, crop=False)
+
+# load the pre-trained EAST model for text detection 
+net = cv2.dnn.readNet(args["east"])
+
 layerNames = [
 	"feature_fusion/Conv_7/Sigmoid",
 	"feature_fusion/concat_3"]
 
 # load the pre-trained EAST text detector
 print("[INFO] loading EAST text detector...")
-net = cv2.dnn.readNet(args["east"])
+#net = cv2.dnn.readNet(args['frozen_east_text_detection.pb', ])
 
 # construct a blob from the image and then perform a forward pass of
 # the model to obtain the two output layer sets
-blob = cv2.dnn.blobFromImage(image, 1.0, (W, H),
-	(123.68, 116.78, 103.94), swapRB=True, crop=False)
+
 start = time.time()
 net.setInput(blob)
 (scores, geometry) = net.forward(layerNames)
