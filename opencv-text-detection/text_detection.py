@@ -9,11 +9,12 @@ import numpy as np
 import argparse, time, cv2, sys
 
 # construct the argument parser and parse the arguments
-ap = argparse.ArgumentParser()
+#ap = argparse.ArgumentParser()
 args = {"image":"sign.jpg", 
         "east":"frozen_east_text_detection.pb", 
         "min_confidence":0.5, 
-        "width":320, "height":320}
+        "width":320, 
+        "height":320}
 
 #Give location of the image to be read.
 #"Example-images/ex24.jpg" image is being loaded here. 

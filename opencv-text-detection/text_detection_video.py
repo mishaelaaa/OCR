@@ -69,18 +69,25 @@ def decode_predictions(scores, geometry):
 	return (rects, confidences)
 
 # construct the argument parser and parse the arguments
-ap = argparse.ArgumentParser()
-ap.add_argument("-east", "--east", type=str, required=True,
-	help="path to input EAST text detector")
-ap.add_argument("-v", "--video", type=str,
-	help="path to optinal input video file")
-ap.add_argument("-c", "--min-confidence", type=float, default=0.5,
-	help="minimum probability required to inspect a region")
-ap.add_argument("-w", "--width", type=int, default=320,
-	help="resized image width (should be multiple of 32)")
-ap.add_argument("-e", "--height", type=int, default=320,
-	help="resized image height (should be multiple of 32)")
-args = vars(ap.parse_args())
+
+#ap = argparse.ArgumentParser()
+#ap.add_argument("-east", "--east", type=str, required=True,
+#	help="path to input EAST text detector")
+#ap.add_argument("-v", "--video", type=str,
+#	help="path to optinal input video file")
+#ap.add_argument("-c", "--min-confidence", type=float, default=0.5,
+#	help="minimum probability required to inspect a region")
+#ap.add_argument("-w", "--width", type=int, default=320,
+#	help="resized image width (should be multiple of 32)")
+#ap.add_argument("-e", "--height", type=int, default=320,
+#	help="resized image height (should be multiple of 32)")
+#args = vars(ap.parse_args())
+
+args = {"east":"frozen_east_text_detection.pb", 
+        "video" : "cap", 
+        "min_confidence":0.5, 
+        "width":320, 
+        "height":320}
 
 # initialize the original frame dimensions, new frame dimensions,
 # and ratio between the dimensions
@@ -107,7 +114,8 @@ if not args.get("video", False):
 
 # otherwise, grab a reference to the video file
 else:
-	vs = cv2.VideoCapture(args["video"])
+    cap = cv2.VideoCapture(0)
+    vs = cap
 
 # start the FPS throughput estimator
 fps = FPS().start()
@@ -174,6 +182,7 @@ while True:
 
 # stop the timer and display FPS information
 fps.stop()
+
 print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
 print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
