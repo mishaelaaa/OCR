@@ -1,15 +1,9 @@
-# USAGE
-# python text_detection.py 
-# --image images/lebron_james.jpg 
-# --east frozen_east_text_detection.pb
-
 # import the necessary packages
 from imutils.object_detection import non_max_suppression
 import numpy as np
 import argparse, time, cv2, sys
 
 # construct the argument parser and parse the arguments
-#ap = argparse.ArgumentParser()
 args = {"image":"sign.jpg", 
         "east":"frozen_east_text_detection.pb", 
         "min_confidence":0.5, 
@@ -17,7 +11,6 @@ args = {"image":"sign.jpg",
         "height":320}
 
 #Give location of the image to be read.
-#"Example-images/ex24.jpg" image is being loaded here. 
 
 args['image']="sign.jpg"
 image = cv2.imread(args['image'])
