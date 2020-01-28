@@ -33,5 +33,12 @@ Due to the proliferation of cheap digital cameras, and not to mention the fact t
 #  EAST deep learning text detector
 ![The structure of the EAST text detection Fully-Convolutional Network][image]
 
-[image]: https://github.com/mishaelaaa/opencv-text-detection/blob/master/opencv-text-detection/images/opencv_text_detection_east.jpg "opencv text detection east" 
+[image]: https://github.com/mishaelaaa/opencv-text-detection/blob/master/opencv-text-detection/images/readme/opencv_text_detection_east.jpg "opencv text detection east" 
+
+# CRNN
+Convolutional Recurrent Neural Network (CRNN) is a combination of CNN, RNN, and CTC(Connectionist Temporal Classification) loss for image-based sequence recognition tasks, such as scene text recognition and OCR. 
+
+[image]: https://github.com/mishaelaaaopencv-text-detection/opencv-text-detection/images/readme/Screen-Shot-2019-08-13-at-2.07.18-AM.png "CRNN" 
+  
+
 
