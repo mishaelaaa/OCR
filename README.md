@@ -34,3 +34,4 @@ Due to the proliferation of cheap digital cameras, and not to mention the fact t
 ![The structure of the EAST text detection Fully-Convolutional Network][image]
 
 [image]: https://github.com/mishaelaaa/opencv-text-detection/blob/master/opencv-text-detection/images/opencv_text_detection_east.jpg "opencv text detection east" 
+
