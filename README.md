@@ -38,7 +38,7 @@ Due to the proliferation of cheap digital cameras, and not to mention the fact t
 # CRNN
 Convolutional Recurrent Neural Network (CRNN) is a combination of CNN, RNN, and CTC(Connectionist Temporal Classification) loss for image-based sequence recognition tasks, such as scene text recognition and OCR. 
 
-[image]: https://github.com/mishaelaaa/opencv-text-detection/blob/master/opencv-text-detection/images/readme/SCRNN.png "CRNN" 
+[image1]: https://github.com/mishaelaaa/opencv-text-detection/blob/master/opencv-text-detection/images/readme/SCRNN.png "CRNN" 
   
 
 
