@@ -57,3 +57,21 @@ The sub-processes in the list above of course can differ, but these are roughly 
 * Running Tesseract with CLI and Python
 * Limitations of Tesseract engine
 
+
+> **Tesseract OCR**
+
+Tesseract is an open source text recognition (OCR) Engine, available under the Apache 2.0 license. It can be used directly, or (for programmers) using an API to extract printed text from images. It supports a wide variety of languages. Tesseract doesn't have a built-in GUI, but there are several available from the 3rdParty page. It can be used with the existing layout analysis to recognize text within a large document, or it can be used in conjunction with an external text detector to recognize text from an image of a single text line.
+
+![OCR Process Flow to build API with Tesseract][image3]
+
+[image3]: https://github.com/mishaelaaa/opencv-text-detection/blob/master/opencv-text-detection/images/readme/ocr_flow.png
+
+> **Technology - How it works**
+
+LSTMs are great at learning sequences but slow down a lot when the number of states is too large. There are empirical results that suggest it is better to ask an LSTM to learn a long sequence than a short sequence of many classes. Tesseract developed from OCRopus model in Python which was a fork of a LSMT in C++, called CLSTM. CLSTM is an implementation of the LSTM recurrent neural network model in C++, using the Eigen library for numerical computations.
+
+
+![Tesseract 3 OCR process from paper][image4]
+
+[image4]: https://github.com/mishaelaaa/opencv-text-detection/blob/master/opencv-text-detection/images/readme/How_it_works.png
+
