@@ -37,8 +37,23 @@ Due to the proliferation of cheap digital cameras, and not to mention the fact t
 
 # CRNN
 Convolutional Recurrent Neural Network (CRNN) is a combination of CNN, RNN, and CTC(Connectionist Temporal Classification) loss for image-based sequence recognition tasks, such as scene text recognition and OCR. 
+![CRNN : ][image1]
 
 [image1]: https://github.com/mishaelaaa/opencv-text-detection/blob/master/opencv-text-detection/images/readme/CRNN.png "CRNN" 
-  
 
+# Tesseract
+So, what is the OCR? Optical Character Recognition. In other words, OCR systems transform a two-dimensional image of text, that could contain machine printed or handwritten text from its image representation into machine-readable text. OCR as a process generally consists of several sub-processes to perform as accurately as possible. The subprocesses are:
+
+* Preprocessing of the Image
+* Text Localization
+* Character Segmentation
+* Character Recognition
+* Post Processing
+
+The sub-processes in the list above of course can differ, but these are roughly steps needed to approach automatic character recognition. In OCR software, it’s main aim to identify and capture all the unique words using different languages from written text characters. Some of the models are:
+
+* Tesseract OCR Features
+* Preprocessing for OCR using OpenCV
+* Running Tesseract with CLI and Python
+* Limitations of Tesseract engine
 
