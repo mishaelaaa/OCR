@@ -100,7 +100,8 @@ if not args.get("video", False):
 
 # otherwise, grab a reference to the video file
 else:
-    cap = cv2.VideoCapture(0)
+    #cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     vs = cap
 
 # start the FPS throughput estimator

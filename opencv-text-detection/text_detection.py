@@ -4,11 +4,12 @@ import numpy as np
 import argparse, time, cv2, sys
 
 # construct the argument parser and parse the arguments
-args = {"image":"./images/1.jpg", 
+args = {"image":"./images/", 
         "east":"frozen_east_text_detection.pb", 
         "min_confidence":0.5, 
         "width":320, 
-        "height":320}
+        "height":320,
+        "preprocess" : "default"}
 
 #Give location of the image to be read.
 
@@ -29,6 +30,7 @@ args = {"image":"./images/1.jpg",
 args['image']="./images/1.5.png"
 
 image = cv2.imread(args['image'])
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 #Saving a original image and shape
 orig = image.copy()
