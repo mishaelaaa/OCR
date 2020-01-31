@@ -75,7 +75,7 @@ import argparse
 import cv2
 from PIL import Image
 
-pytesseract.pytesseract.tesseract_cmd = './Tesseract-OCR/tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files (x86)/Tesseract-OCR/tesseract.exe'
 
 def decode_predictions(scores, geometry):
 	# grab the number of rows and columns from the scores volume, then
