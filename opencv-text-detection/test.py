@@ -16,8 +16,29 @@ from PIL import Image
 pytesseract.pytesseract.tesseract_cmd = './Tesseract-OCR/tesseract.exe'
 
 # construct the argument parser and parse the arguments
-args = {"image":"19.jpg", 
+args = {"image":"./images/", 
         "preprocess" : "thresh" }
+
+#args['image']="./images/1.jpg"
+#args['image']="./images/2.jpg"
+#args['image']="./images/3.jpg"
+#args['image']="./images/4.jpg"
+#args['image']="./images/5.jpg"
+#args['image']="./images/6.jpg"
+#args['image']="./images/7.jpg"
+#args['image']="./images/9.jpg"
+
+#args['image']="./images/15.jpg"
+
+#args['image']="./images/14.jpg"
+#args['image']="./images/13.jpg"
+
+#args['image']="./images/1.1.png"
+#args['image']="./images/1.2.png"
+#args['image']="./images/1.3.png"
+#args['image']="./images/1.4.png"
+#args['image']="./images/1.5.png"
+args['image']="./images/Untitled.png"
 
 # load the example image and convert it to grayscale
 image = cv2.imread(args["image"])
@@ -32,7 +53,7 @@ if args["preprocess"] == "thresh":
 # make a check to see if median blurring should be done to remove
 # noise
 elif args["preprocess"] == "blur":
-	gray = cv2.medianBlur(gray, 3)
+	gray = cv2.medianBlur(gray, 10)
  
 # write the grayscale image to disk as a temporary file so we can
 # apply OCR to it
@@ -41,7 +62,10 @@ cv2.imwrite(filename, gray)
 
 # load the image as a PIL/Pillow image, apply OCR, and then delete
 # the temporary 
-text = pytesseract.image_to_string(Image.open(filename))
+
+#text = pytesseract.image_to_string(filename, lang = 'bul')
+text = pytesseract.image_to_string(filename, lang = 'eng')
+#text = pytesseract.image_to_string(Image.open(filename))
 os.remove(filename)
 print(text)
  
