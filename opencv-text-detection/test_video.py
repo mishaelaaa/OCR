@@ -1,15 +1,9 @@
-# USAGE
-# python text_detection_video.py --east frozen_east_text_detection.pb
-
 # import the necessary packages
 from imutils.video import VideoStream
 from imutils.video import FPS
 from imutils.object_detection import non_max_suppression
 import numpy as np
-import argparse
-import imutils
-import time
-import cv2
+import argparse, imutils, time, cv2
 
 def decode_predictions(scores, geometry):
 	# grab the number of rows and columns from the scores volume, then
@@ -73,8 +67,10 @@ args = {"east":"frozen_east_text_detection.pb",
         "video" : "cap", 
         "min_confidence":0.5, 
         "width":320, 
-        "height":320}
-
+        "height":320,
+        "lower_red" : "np.array([30,150,50])",
+        "upper_red" : "np.array([255,255,180])" }
+        
 # initialize the original frame dimensions, new frame dimensions,
 # and ratio between the dimensions
 (W, H) = (None, None)
@@ -92,23 +88,20 @@ layerNames = [
 print("[INFO] loading EAST text detector...")
 net = cv2.dnn.readNet(args["east"])
 
-# if a video path was not supplied, grab the reference to the web cam
 if not args.get("video", False):
 	print("[INFO] starting video stream...")
 	vs = VideoStream(src=0).start()
-	time.sleep(1.0)
+	time.sleep(0.5)
 
 # otherwise, grab a reference to the video file
 else:
     cap = cv2.VideoCapture(0)
-    #cap = cv2.VideoCapture(1)
     vs = cap
 
 # start the FPS throughput estimator
 fps = FPS().start()
 
-# loop over frames from the video stream
-while True:
+while (1):
 	# grab the current frame, then handle if we are using a
 	# VideoStream or VideoCapture object
 	frame = vs.read()
@@ -169,7 +162,7 @@ while True:
 
 # stop the timer and display FPS information
 fps.stop()
-
+ 
 print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
 print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 

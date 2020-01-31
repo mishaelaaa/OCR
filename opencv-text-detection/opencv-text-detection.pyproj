@@ -26,6 +26,9 @@
     <Compile Include="test.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="test_video.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="text_detection.py" />
     <Compile Include="text_detection_video.py" />
   </ItemGroup>
