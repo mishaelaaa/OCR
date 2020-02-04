@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bb35c1f7-0112-4be3-bfcd-f1380d91297c</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>text_detection.py</StartupFile>
+    <StartupFile>test.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,9 +24,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="test.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="test_video.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="text_detection.py" />

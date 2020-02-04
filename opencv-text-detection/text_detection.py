@@ -4,7 +4,7 @@ import numpy as np
 import argparse, time, cv2, sys
 
 # construct the argument parser and parse the arguments
-args = {"image":"./images/", 
+args = {"image":"./images/technical/", 
         "east":"frozen_east_text_detection.pb", 
         "min_confidence":0.5, 
         "width":320, 
@@ -12,22 +12,7 @@ args = {"image":"./images/",
         "preprocess" : "default"}
 
 #Give location of the image to be read.
-
-#args['image']="./images/1.jpg"
-#args['image']="./images/2.jpg"
-#args['image']="./images/3.jpg"
-#args['image']="./images/4.jpg"
-#args['image']="./images/5.jpg"
-#args['image']="./images/6.jpg"
-#args['image']="./images/7.jpg"
-#args['image']="./images/9.jpg"
-#args['image']="./images/10.jpg"
-
-#args['image']="./images/1.1.png"
-#args['image']="./images/1.2.png"
-#args['image']="./images/1.3.png"
-#args['image']="./images/1.4.png"
-args['image']="./images/1.5.png"
+args['image']="./images/technical/IMG_20200203_084128.jpg"
 
 image = cv2.imread(args['image'])
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
