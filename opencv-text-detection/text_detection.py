@@ -12,14 +12,17 @@ args = {"image":"./images/technical/",
         "preprocess" : "default"}
 
 #Give location of the image to be read.
-args['image']="./images/technical/IMG_20200203_084128.jpg"
+#args['image']="./images/technical/48.jpg"
+args['image']="12356.png"
 
 image = cv2.imread(args['image'])
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+img = cv2.resize(image,None,fx=0.5,fy=0.5)
+
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 #Saving a original image and shape
-orig = image.copy()
-(origH, origW) = image.shape[:2]
+orig = img.copy()
+(origH, origW) = img.shape[:2]
 
 # set the new height and width to default 320 by using args #dictionary.  
 (newW, newH) = (args["width"], args["height"])
@@ -30,11 +33,11 @@ rW = origW / float(newW)
 rH = origH / float(newH)
 
 # resize the original image to new dimensions
-image = cv2.resize(image, (newW, newH))
-(H, W) = image.shape[:2]
+img = cv2.resize(img, (newW, newH))
+(H, W) = img.shape[:2]
 
 # construct a blob from the image to forward pass it to EAST model
-blob = cv2.dnn.blobFromImage(image, 1.0, (W, H),
+blob = cv2.dnn.blobFromImage(img, 1.0, (W, H),
 	(123.68, 116.78, 103.94), swapRB=True, crop=False)
 
 # load the pre-trained EAST model for text detection 
