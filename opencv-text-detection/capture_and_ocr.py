@@ -1,22 +1,117 @@
-import numpy as np
-import cv2, pytesseract
+# import the necessary packages
+from imutils.video import VideoStream
+from imutils.video import FPS
 from imutils.object_detection import non_max_suppression
 from matplotlib import pyplot as plt
+import numpy as np
+import argparse, imutils, time, cv2, pytesseract
 
 pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files/Tesseract-OCR/tesseract.exe'
+
 #Creating argument dictionary for the default arguments needed in the code. 
-args = {#"image":"./images/technical/58.jpg", 
-        "image":"58.jpg", 
-        "east":"frozen_east_text_detection.pb", 
-        "min_confidence":0.5, 
-        "width":320, 
-        "height":320}
+args = {"video"         : "cap",
+        "image"         : "img_",
+        "east"          : "frozen_east_text_detection.pb", 
+        "min_confidence": 0.5, 
+        "width"         : 320, 
+        "height"        : 320}
 
-#Give location of the image to be read.
-#"Example-images/ex24.jpg" image is being loaded here. 
+'''
+# initialize the original frame dimensions, new frame dimensions,
+# and ratio between the dimensions
+'''
+(W, H) = (None, None)
+(newW, newH) = (args["width"], args["height"])
+(rW, rH) = (None, None)
 
-#args['image']="./images/technical/58.jpg"
-args['image']="58.jpg"
+'''
+# define the two output layer names for the EAST detector model that
+# we are interested -- the first is the output probabilities and the
+# second can be used to derive the bounding box coordinates of text
+'''
+
+layerNames = [
+	"feature_fusion/Conv_7/Sigmoid",
+	"feature_fusion/concat_3"]
+
+# load the pre-trained EAST text detector
+print("[INFO] loading EAST text detector...")
+net = cv2.dnn.readNet(args["east"])
+
+# if a video path was not supplied, grab the reference to the web cam
+if not args.get("video", False):
+	print("[INFO] starting video stream...")
+	#vs = VideoStream(src=0).start()
+	vs = VideoStream(src=1).start()
+	time.sleep(1.0)
+
+# otherwise, grab a reference to the video file
+else:
+    #cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
+    vs = cap
+
+# start the FPS throughput estimator
+fps = FPS().start()
+
+while True:
+    try:
+        check, frame = vs.read()
+        print(check) #prints true as long as the webcam is running
+        print(frame) #prints matrix values of each framecd 
+        cv2.imshow("Capturing", frame)
+
+        key = cv2.waitKey(1)
+
+        if key == ord('s'): 
+
+            cv2.imwrite(filename='saved_img.jpg', img=frame)
+            vs.release()
+            img_new = cv2.imread('saved_img.jpg', cv2.IMREAD_GRAYSCALE)
+            img_new = cv2.imshow("Captured Image", img_new)
+
+            cv2.waitKey(1650) #S
+            cv2.destroyAllWindows()
+
+            print("Processing image...")
+
+            img_ = cv2.imread('saved_img.jpg', cv2.IMREAD_ANYCOLOR)
+            print("Converting RGB image to grayscale...")
+            gray = cv2.cvtColor(img_, cv2.COLOR_BGR2GRAY)
+
+            print("Converted RGB image to grayscale...")
+            print("Resizing image to 350x350 scale...")
+
+            img_ = cv2.resize(gray,(350, 350))
+            print("Resized...")
+
+            img_resized = cv2.imwrite(filename='saved_img-final.jpg', img=img_)
+            print("Image saved!")
+        
+            break
+
+        elif key == ord('q'):
+
+            print("Turning off camera.")
+            vs.release()
+
+            print("Camera off.")
+            print("Program ended.")
+            cv2.destroyAllWindows()
+            break
+        
+    except(KeyboardInterrupt):
+        print("Turning off camera.")
+        vs.release()
+
+        print("Camera off.")
+        print("Program ended.")
+        cv2.destroyAllWindows()
+        break
+
+
+
+args['image']='saved_img.jpg'
 image = cv2.imread(args['image'])
 
 #Saving a original image and shape

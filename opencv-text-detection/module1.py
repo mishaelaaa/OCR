@@ -58,9 +58,9 @@ def decode_predictions(scores, geometry):
 args = {"image"         :"./images/technical/48_cut.jpg", 
         "east"          :"frozen_east_text_detection.pb",
         "min_confidence":0.5, 
-        "width"         :320, 
-        "height"        :320,
-        "padding"       :0.0}
+        "width"         :300, 
+        "height"        :300,
+        "padding"       :0.01}
 
 # load the input image and grab the image dimensions
 args['image']="./images/technical/48_cut.jpg"
@@ -91,7 +91,7 @@ net = cv2.dnn.readNet(args["east"])
 # construct a blob from the image and then perform a forward pass of
 # the model to obtain the two output layer sets
 blob = cv2.dnn.blobFromImage(image, 1.0, (W, H),
-	(123.68, 116.78, 103.94), swapRB=True, crop=False)
+	(150, 120, 105), swapRB=True, crop=False)
 net.setInput(blob)
 (scores, geometry) = net.forward(layerNames)
 # decode the predictions, then  apply non-maxima suppression to
@@ -135,7 +135,8 @@ for (startX, startY, endX, endY) in boxes:
 	#text = pytesseract.image_to_string(roi, config=config) 
 
 	text =  pytesseract.image_to_string(roi, lang = 'bul')
-	text =  pytesseract.image_to_string(roi, lang = 'eng')
+	#text =  pytesseract.image_to_string(roi, lang = 'eng')
+
 	# add the bounding box coordinates and OCR'd text to the list
 	# of results
 	results.append(((startX, startY, endX, endY), text))
