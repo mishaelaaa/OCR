@@ -4,7 +4,7 @@ import numpy as np
 import argparse, time, cv2, sys
 
 # construct the argument parser and parse the arguments
-args = {"image":"./images/technical/", 
+args = {"image":"./images/", 
         "east":"frozen_east_text_detection.pb", 
         "min_confidence":0.5, 
         "width":320, 

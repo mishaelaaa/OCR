@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 import argparse, imutils, time, cv2, pytesseract
 
+#path for tesseract
 pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
 #Creating argument dictionary for the default arguments needed in the code. 
@@ -61,37 +62,47 @@ while True:
         print(frame) #prints matrix values of each framecd 
         cv2.imshow("Capturing", frame)
 
+        # Waits for a pressed key.
         key = cv2.waitKey(1)
 
+        # If I pressed a S-key.
         if key == ord('s'): 
-
+            # Write image with name 'saved_img.jpg' in folder
             cv2.imwrite(filename='saved_img.jpg', img=frame)
             vs.release()
+            # Read image with name 'saved_img.jpg' in folder
             img_new = cv2.imread('saved_img.jpg', cv2.IMREAD_GRAYSCALE)
+            # view the image 
             img_new = cv2.imshow("Captured Image", img_new)
 
-            cv2.waitKey(1650) #S
+            # Waits for a pressed S-key.
+            cv2.waitKey(1650) 
             cv2.destroyAllWindows()
 
             print("Processing image...")
-
+            
+            # Read image with name 'saved_img.jpg' in folder
             img_ = cv2.imread('saved_img.jpg', cv2.IMREAD_ANYCOLOR)
             print("Converting RGB image to grayscale...")
+            # Converting RGB image to grayscale
             gray = cv2.cvtColor(img_, cv2.COLOR_BGR2GRAY)
 
             print("Converted RGB image to grayscale...")
             print("Resizing image to 350x350 scale...")
 
+            # Resizing image to 350x350 scale
             img_ = cv2.resize(gray,(350, 350))
             print("Resized...")
 
+            # Write image with name 'saved_img-final.jpg' in folder
             img_resized = cv2.imwrite(filename='saved_img-final.jpg', img=img_)
             print("Image saved!")
         
             break
-
+        
+        # If I pressed a Q-key.
         elif key == ord('q'):
-
+            #close the camera
             print("Turning off camera.")
             vs.release()
 
@@ -100,6 +111,7 @@ while True:
             cv2.destroyAllWindows()
             break
         
+    # close the all windows 
     except(KeyboardInterrupt):
         print("Turning off camera.")
         vs.release()
@@ -108,8 +120,6 @@ while True:
         print("Program ended.")
         cv2.destroyAllWindows()
         break
-
-
 
 args['image']='saved_img.jpg'
 image = cv2.imread(args['image'])
@@ -131,16 +141,18 @@ image = cv2.resize(image, (newW, newH))
 (H, W) = image.shape[:2]
 
 # construct a blob from the image to forward pass it to EAST model
-blob = cv2.dnn.blobFromImage(image, 1.5, (W, H),
+blob = cv2.dnn.blobFromImage(image, 0.5, (W, H),
 	(123.68, 116.78, 103.94), swapRB=True, crop=False)
 
 # load the pre-trained EAST model for text detection 
 net = cv2.dnn.readNet(args["east"])
 
+'''
 # We would like to get two outputs from the EAST model. 
-#1. Probabilty scores for the region whether that contains text or not. 
-#2. Geometry of the text -- Coordinates of the bounding box detecting a text
+    1. Probabilty scores for the region whether that contains text or not. 
+    2. Geometry of the text -- Coordinates of the bounding box detecting a text
 # The following two layer need to pulled from EAST model for achieving this. 
+'''
 layerNames = [
 	"feature_fusion/Conv_7/Sigmoid",
 	"feature_fusion/concat_3"]
@@ -180,7 +192,7 @@ def predictions(prob_score, geo):
 			h = x0[i] + x2[i]
 			w = x1[i] + x3[i]
 
-			# compute start and end for the text pred bbox
+			# compute start and end for the text pred box
 			endX = int(offX + (cos * x1[i]) + (sin * x2[i]))
 			endY = int(offY - (sin * x1[i]) + (cos * x2[i]))
 			startX = int(endX - w)
@@ -197,7 +209,6 @@ def predictions(prob_score, geo):
 boxes = non_max_suppression(np.array(boxes), probs=confidence_val)
 
 ##Text Detection and Recognition 
-
 # initialize the list of results
 results = []
 
@@ -213,17 +224,80 @@ for (startX, startY, endX, endY) in boxes:
 	r = orig[startY:endY, startX:endX]
 
 	#configuration setting to convert image to string.  
-	configuration = ("-l bul --oem 1 --psm 8")
+	configuration = ("-l bul+eng --psm 8")
     ##This will recognize the text from the image of bounding box
 	text = pytesseract.image_to_string(r, config=configuration)
-	#text = pytesseract.image_to_string(r, lang = 'eng')
-	#text = pytesseract.image_to_string(r, lang = 'bul')
 
 	# append bbox coordinate and associated text to the list of results 
 	results.append(((startX, startY, endX, endY), text))
 
-    #Display the image with bounding box and recognized text
+#Display the image with bounding box and recognized text
 orig_image = orig.copy()
+
+''' -c CONFIGVAR=VALUE
+
+Set value for parameter CONFIGVAR to VALUE. Multiple -c arguments are allowed.
+'''
+
+''' --dpi N
+
+Specify the resolution N in DPI for the input image(s). A typical value for N is 300. Without this option, the resolution is read from the metadata included in the image. If an image does not include that information, Tesseract tries to guess it.
+'''
+
+''' -l LANG 
+
+[link] : https://github.com/tesseract-ocr/tessdata
+'''
+
+''' -l SCRIPT
+
+The language or script to use. If none is specified, eng (English) is assumed. Multiple languages may be specified, separated by plus characters. Tesseract uses 3-character ISO 639-2 language codes (see LANGUAGES AND SCRIPTS).
+'''
+
+''' --psm N
+
+Set Tesseract to only run a subset of layout analysis and assume a certain form of image. The options for N are:
+
+0       Orientation and script detection (OSD) only.
+1       Automatic page segmentation with OSD.
+2       Automatic page segmentation, but no OSD, or OCR. (not implemented)
+3       Fully automatic page segmentation, but no OSD. (Default)
+4       Assume a single column of text of variable sizes.
+5       Assume a single uniform block of vertically aligned text.
+6       Assume a single uniform block of text.
+7       Treat the image as a single text line.
+8       Treat the image as a single word.
+9       Treat the image as a single word in a circle.
+10      Treat the image as a single character.
+11      Sparse text. Find as much text as possible in no particular order.
+12      Sparse text with OSD.
+13      Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.
+'''
+
+''' --oem N
+
+Specify OCR Engine mode. The options for N are:
+
+0       Original Tesseract only.
+1       Neural nets LSTM only.
+2       Tesseract + LSTM.
+3       Default, based on what is available.
+'''
+
+''' --tessdata-dir PATH
+
+Specify the location of tessdata path.
+'''
+
+''' --user-patterns FILE
+
+Specify the location of user patterns file.
+'''
+
+''' --user-words FILE
+
+Specify the location of user words file.
+'''
 
 # Moving over the results and display on the image
 for ((start_X, start_Y, end_X, end_Y), text) in results:
@@ -231,7 +305,7 @@ for ((start_X, start_Y, end_X, end_Y), text) in results:
 	print("{}\n".format(text))
 
 	# Displaying text
-	text = "".join([x if ord(x) < 128 else "" for x in text]).strip()
+	text = "".join([x if ord(x) > 10 else "" for x in text]).strip()
 	cv2.rectangle(orig_image, (start_X, start_Y), (end_X, end_Y),
 		(0, 0, 255), 2)
 	cv2.putText(orig_image, text, (start_X, start_Y - 30),
