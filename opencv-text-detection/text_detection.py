@@ -12,7 +12,7 @@ args = {"image":"./images/",
         "preprocess" : "default"}
 
 #Give location of the image to be read.
-args['image']="51.jpg"
+args['image']="./images/WIN_20200214_15_45_47_Pro.jpg"
 
 image = cv2.imread(args['image'])
 img = cv2.resize(image,None,fx=0.5,fy=0.5)
