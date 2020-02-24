@@ -6,7 +6,7 @@ from pytesseract import Output
 #path for tesseract
 pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
-img_ = cv2.imread('.\images\eng.png', cv2.IMREAD_ANYCOLOR)
+img_ = cv2.imread("./images/text/image_text_1.jpg", cv2.IMREAD_ANYCOLOR)
 gray = cv2.cvtColor(img_, cv2.COLOR_BGR2GRAY)
 
 print("Converted RGB image to grayscale...")

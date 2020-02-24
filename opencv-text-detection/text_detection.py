@@ -4,15 +4,15 @@ import numpy as np
 import argparse, time, cv2, sys
 
 # construct the argument parser and parse the arguments
-args = {"image":"./images/", 
-        "east":"frozen_east_text_detection.pb", 
+args = {"image":        "./images/text/", 
+        "east":         "frozen_east_text_detection.pb", 
         "min_confidence":0.5, 
-        "width":320, 
-        "height":320,
+        "width":        320, 
+        "height":       320,
         "preprocess" : "default"}
 
 #Give location of the image to be read.
-args['image']="./images/WIN_20200214_15_45_47_Pro.jpg"
+args['image']="./images/text/image_text_1.jpg"
 
 image = cv2.imread(args['image'])
 img = cv2.resize(image,None,fx=0.5,fy=0.5)

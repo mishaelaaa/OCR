@@ -224,7 +224,7 @@ for (startX, startY, endX, endY) in boxes:
 	r = orig[startY:endY, startX:endX]
 
 	#configuration setting to convert image to string.  
-	configuration = ("-l bul+eng --psm 8")
+	configuration = ("-l eng --psm 8")
     ##This will recognize the text from the image of bounding box
 	text = pytesseract.image_to_string(r, config=configuration)
 
